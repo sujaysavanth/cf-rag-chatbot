@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cf-rag-chatbot",
+  "main": "src/entry.py",
+  "compatibility_date": "2026-05-16",
+  "compatibility_flags": [
+    "python_workers"
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "rag_metadata",
+      "database_name": "rag-metadata",
+      "database_id": "0fcf75ad-fe1e-4c17-9f38-e48c7d9595ca",
+      "remote": true
+    }
+  ],
+  "vectorize": [
+    {
+      "binding": "VECTORIZE",
+      "index_name": "rag-vectors",
+      "remote": true
+    }
+  ],
+  "ai": {
+    "binding": "AI",
+    "remote": true
+  }
+}
