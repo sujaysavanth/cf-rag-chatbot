@@ -1,23 +1,60 @@
-## Usage
+# cf-rag-chatbot 🤖
 
-You can run the Worker defined by your new project by executing `wrangler dev` in this
-directory. This will start up an HTTP server and will allow you to iterate on your
-Worker without having to restart `wrangler`.
+An internal AI chatbot powered by **Retrieval-Augmented Generation (RAG)**, 
+built entirely on the Cloudflare developer platform. Designed to demonstrate 
+production-grade AI pipeline architecture with document ingestion, 
+semantic search, and LLM evaluation.
 
-### Types and autocomplete
+## Architecture
 
-This project also includes a pyproject.toml with some requirements which
-set up autocomplete and type hints for this Python Workers project.
+User Query → Cloudflare Worker → Vectorize (semantic search) 
+         → Workers AI (LLM) → AI Gateway (monitoring) → Response
 
-To get these installed you'll need `uv`, which you can install by following
-https://docs.astral.sh/uv/getting-started/installation/.
+## Stack
 
-Once `uv` is installed, you can run the following:
+| Layer            | Technology                        |
+|------------------|-----------------------------------|
+| Runtime          | Cloudflare Workers (Python beta)  |
+| Embeddings + LLM | Cloudflare Workers AI             |
+| Vector Search    | Cloudflare Vectorize              |
+| Metadata Storage | Cloudflare D1                     |
+| Monitoring       | Cloudflare AI Gateway             |
 
+## Features
+
+- **Document ingestion pipeline** — chunk, embed, and store documents
+- **Semantic search** — retrieve relevant context via cosine similarity
+- **RAG query pipeline** — ground LLM responses in retrieved context
+- **LLM evaluation layer** — score responses for relevance and accuracy
+- **Edge-native** — zero cold starts, globally distributed
+
+## Getting Started
+
+### Prerequisites
+- Cloudflare account (free tier)
+- Node.js (for Wrangler CLI)
+- Python 3.11+
+
+### Setup
+
+```bash
+# Install Wrangler
+npm install -g wrangler
+wrangler login
+
+# Clone the repo
+git clone https://github.com/sujaysavanth/cf-rag-chatbot.git
+cd cf-rag-chatbot
+
+# Create Cloudflare services
+wrangler d1 create rag-metadata
+wrangler vectorize create rag-vectors --dimensions=768 --metric=cosine
 ```
-uv venv
-uv sync
+
+### Deploy
+
+```bash
+wrangler deploy
 ```
 
-Then point your editor's Python plugin at the `.venv` directory. You should then have working
-autocomplete and type information in your editor.
+## Project Structure
